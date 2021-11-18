@@ -1,8 +1,22 @@
 ﻿<Properties StartupConfiguration="{443AEE82-87C1-8211-D5BC-E3CA1CC4F237}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Pokemon/Move.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="44" Column="18" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="79" Column="2" />
+      <File FileName="Assets/Scripts/Pokemon/PokemonBase.cs" Line="40" Column="2" />
+      <File FileName="Assets/Scripts/Pokemon/Pokemon.cs" Line="21" Column="88" />
+      <File FileName="Assets/Scripts/Pokemon/MoveBase.cs" Line="22" Column="32" />
+      <File FileName="Assets/Scripts/Pokemon/Move.cs" Line="5" Column="19" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Pokemon" expanded="True" selected="True" />
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
