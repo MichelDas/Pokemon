@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
 
     Animator animator;
 
-    [SerializeField] LayerMask solidObjects;
+    [SerializeField] LayerMask SolidObjectLayer;
+    [SerializeField] LayerMask longGrassLayer;
 
     private void Awake()
     {
@@ -64,10 +65,25 @@ public class PlayerController : MonoBehaviour
 
         transform.position = targetPos;
         isMoving = false;
+        CheckForEncounters();
     }
 
     bool IsWalkable(Vector2 targetPos)
     {
-        return !Physics2D.OverlapCircle(targetPos, 0.2f, solidObjects);
+        return !Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjectLayer);
     }
+
+    void CheckForEncounters()
+    {
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, longGrassLayer))
+        {
+            // 10% possibility of encounter
+            if(Random.Range(0,100) < 10)
+            {
+                Debug.Log("Monster Encounter");
+            }
+        }
+    }
+
+
 }
