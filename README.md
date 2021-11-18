@@ -1,4 +1,4 @@
-# Pokemon
+# Pokemon Clone
 
 This is a Practise project which is a clone of old school pokemon game like Pokemon yellow or Pokemon Fire Red.
 
