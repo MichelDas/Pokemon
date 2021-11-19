@@ -1,26 +1,16 @@
 ﻿<Properties StartupConfiguration="{443AEE82-87C1-8211-D5BC-E3CA1CC4F237}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Pokemon/Move.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Character/CharacterAnimator.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="79" Column="2" />
-      <File FileName="Assets/Scripts/Pokemon/PokemonBase.cs" Line="40" Column="2" />
-      <File FileName="Assets/Scripts/Pokemon/Pokemon.cs" Line="21" Column="88" />
-      <File FileName="Assets/Scripts/Pokemon/MoveBase.cs" Line="22" Column="32" />
-      <File FileName="Assets/Scripts/Pokemon/Move.cs" Line="5" Column="19" />
+      <File FileName="Assets/Scripts/Character/NPCController.cs" Line="10" Column="6" />
+      <File FileName="Assets/Scripts/Character/PlayerController.cs" Line="102" Column="42" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="37" Column="40" />
+      <File FileName="Assets/Scripts/Util/SpriteAnimator.cs" Line="16" Column="56" />
+      <File FileName="Assets/Scripts/Character/CharacterAnimator.cs" Line="61" Column="70" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Pokemon" expanded="True" selected="True" />
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="939ffd00-fa0e-46e7-8453-5ae36ede4a37" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5f418fa9-024f-4257-b5a9-c3be9514f77e" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
