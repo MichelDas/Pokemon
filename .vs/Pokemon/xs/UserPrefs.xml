@@ -1,16 +1,15 @@
 ﻿<Properties StartupConfiguration="{443AEE82-87C1-8211-D5BC-E3CA1CC4F237}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Character/CharacterAnimator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Battle/BattleUnit.cs">
     <Files>
-      <File FileName="Assets/Scripts/Character/NPCController.cs" Line="10" Column="6" />
-      <File FileName="Assets/Scripts/Character/PlayerController.cs" Line="102" Column="42" />
-      <File FileName="Assets/Scripts/GameController.cs" Line="37" Column="40" />
-      <File FileName="Assets/Scripts/Util/SpriteAnimator.cs" Line="16" Column="56" />
-      <File FileName="Assets/Scripts/Character/CharacterAnimator.cs" Line="61" Column="70" />
+      <File FileName="Assets/Scripts/Battle/BattleDialogBox.cs" Line="12" Column="34" />
+      <File FileName="Assets/Scripts/Battle/BattleSystem.cs" Line="21" Column="9" />
+      <File FileName="Assets/Scripts/Battle/BattleUnit.cs" Line="16" Column="26" />
+      <File FileName="Assets/Scripts/Battle/BattleHud.cs" Line="16" Column="55" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5f418fa9-024f-4257-b5a9-c3be9514f77e" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="a593ba29-3385-4b4a-9c0a-d65f6a97ce82" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
