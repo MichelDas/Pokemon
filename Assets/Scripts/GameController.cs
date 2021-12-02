@@ -44,7 +44,6 @@ public class GameController : MonoBehaviour
     {
         if(state == GameState.FreeRoam)
         {
-            playerController.HandleUpdate();
         }
         else if (state == GameState.Battle)
         {
@@ -54,6 +53,23 @@ public class GameController : MonoBehaviour
         else if(state == GameState.Dialog)
         {
             DialogManager.Instance.HandleUpdate();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (state == GameState.FreeRoam)
+        {
+            playerController.HandleUpdate();
+        }
+        else if (state == GameState.Battle)
+        {
+            // This code will be uncommented later
+            //battleSystem.HandleUpdate();
+        }
+        else if (state == GameState.Dialog)
+        {
+            
         }
     }
 

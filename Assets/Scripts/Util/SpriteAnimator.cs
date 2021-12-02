@@ -6,7 +6,7 @@ public class SpriteAnimator
 {
     SpriteRenderer spriteRenderer;
 
-    List<Sprite> frames;
+    public List<Sprite> frames;
 
     float frameRate;
 
@@ -25,7 +25,7 @@ public class SpriteAnimator
     public void Start()
     {
         currentFrame = 0;
-        timer = 0f;
+        timer = 0;
         spriteRenderer.sprite = Frames[currentFrame];
     }
 
@@ -36,7 +36,8 @@ public class SpriteAnimator
 
         if(timer > frameRate)
         {
-            currentFrame += (currentFrame + 1) % Frames.Count;
+            
+            currentFrame = (currentFrame + 1) % Frames.Count;
             spriteRenderer.sprite = Frames[currentFrame];
             timer -= frameRate;
         }

@@ -12,10 +12,13 @@ public class DialogManager : MonoBehaviour
 
     public UnityAction OnshowDialog;
     public UnityAction OnCloseDialog;
+    public UnityAction OnDialogFinishd;
 
     Dialog dialog;
     int currentLine = 0;
     bool isTyping;
+
+    public bool IsShowing { get; set; }
 
     public static DialogManager Instance { get; private set; }
 
@@ -27,10 +30,12 @@ public class DialogManager : MonoBehaviour
     // As we are moving from free roaming,
     // So it may sometime occur that PlayerHandler and this work on the same time
     //if we execute this at the same frame
-    public IEnumerator ShowDialog(Dialog dialog)
+    public IEnumerator ShowDialog(Dialog dialog, UnityAction OnFinished)
     {
         yield return new WaitForEndOfFrame();
+        IsShowing = true;
         OnshowDialog?.Invoke();
+        OnDialogFinishd = OnFinished;
         this.dialog = dialog;
         dialogBox.SetActive(true);
         StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
@@ -58,9 +63,12 @@ public class DialogManager : MonoBehaviour
                 StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
             else
             {
+
                 currentLine = 0;
                 dialogBox.SetActive(false);
+                OnDialogFinishd?.Invoke();
                 OnCloseDialog?.Invoke();
+                IsShowing = false;
             }
                 
         }

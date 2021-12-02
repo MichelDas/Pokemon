@@ -39,19 +39,19 @@ public class CharacterAnimator : MonoBehaviour
     {
         SpriteAnimator prevAnim = currentAnim;
 
-        if(MoveX == 1)
+        if(MoveX >= 1)
         {
             currentAnim = walkRightAnim;
         }
-        else if (MoveX == -1)
+        else if (MoveX <= -1)
         {
             currentAnim = walkLeftAnim;
         }
-        else if (MoveY == 1)
+        else if (MoveY >= 1)
         {
             currentAnim = walkUpAnim;
         }
-        else if (MoveY == -1)
+        else if (MoveY <= -1)
         {
             currentAnim = walkDownAnim;
         }
