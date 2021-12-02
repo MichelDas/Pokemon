@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask solidObjectLayer;
     [SerializeField] LayerMask interactableLayer;
     [SerializeField] LayerMask longGrassLayer;
+    [SerializeField] GameController gameController;
 
     private void Awake()
     {
@@ -99,6 +100,7 @@ public class PlayerController : MonoBehaviour
             if(Random.Range(0,100) < 10)
             {
                 Debug.Log("Monster Encounter");
+                gameController.StartBattle();
                 animator.IsMoving = false;
             }
         }

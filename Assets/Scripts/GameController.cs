@@ -11,12 +11,12 @@ public enum GameState
 
 public class GameController : MonoBehaviour
 {
-    public GameState state = GameState.FreeRoam;
 
     [SerializeField] PlayerController playerController;
-    //[SerializeField] BattleSystem battleSystem;
+    [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
 
+    public GameState state = GameState.FreeRoam;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if(state == GameState.FreeRoam)
@@ -48,8 +48,7 @@ public class GameController : MonoBehaviour
         }
         else if (state == GameState.Battle)
         {
-            // This code will be uncommented later
-            //battleSystem.HandleUpdate();
+            battleSystem.HandleUpdate();
         }
         else if(state == GameState.Dialog)
         {
@@ -57,10 +56,18 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void StartBattle()
+    {
+        state = GameState.Battle;
+        battleSystem.gameObject.SetActive(true);
+        worldCamera.gameObject.SetActive(false);
+        battleSystem.StartBattle();
+    }
 
     public void EndBattle()
     {
         state = GameState.FreeRoam;
-        // More codes need to be written here
+        battleSystem.gameObject.SetActive(false);
+        worldCamera.gameObject.SetActive(true);
     }
 }

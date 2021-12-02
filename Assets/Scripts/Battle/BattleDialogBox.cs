@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleDialogBox : MonoBehaviour
 {
+    [SerializeField] Color highlightColor;
     [SerializeField] int letterPerSecond;
     [SerializeField] Text dialogText;
 
@@ -31,6 +32,7 @@ public class BattleDialogBox : MonoBehaviour
             dialogText.text += letter;
             yield return new WaitForSeconds(1f / letterPerSecond);
         }
+        yield return new WaitForSeconds(0.7f);
     }
 
     public void EnableDialogText(bool enabled)
@@ -48,4 +50,50 @@ public class BattleDialogBox : MonoBehaviour
         MoveSelector.SetActive(enabled);
         moveDetails.SetActive(enabled);
     }
-}     
+
+    public void UpdateActionSelection(int selectAction)
+    {
+        //actionTexts[0] or actionTexts[1]
+        for(int i=0; i<actionTexts.Count; i++)
+        {
+            if(selectAction == i)
+            {
+                actionTexts[i].color = highlightColor;
+            }
+            else
+            {
+                actionTexts[i].color = Color.black;
+            }
+        }
+    }
+
+    public void UpdateMoveSelection(int selectMove, Move move)
+    {
+        //actionTexts[0] or actionTexts[1]
+        for (int i = 0; i < moveTexts.Count; i++)
+        {
+            if (selectMove == i)
+            {
+                moveTexts[i].color = highlightColor;
+            }
+            else
+            {
+                moveTexts[i].color = Color.black;
+            }
+        }
+
+        ppText.text = $"PP {move.PP}/{move.Base.PP}";
+        typeText.text = move.Base.Type.ToString();
+    }
+
+    public void SetMoveNames(List<Move> moves)
+    {
+        for(int i=0; i<moveTexts.Count; i++)
+        {
+            if(i<moves.Count)
+                moveTexts[i].text = moves[i].Base.Name;
+            else
+                moveTexts[i].text = ".";
+        }
+    }
+}

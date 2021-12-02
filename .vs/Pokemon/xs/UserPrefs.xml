@@ -1,17 +1,18 @@
 ﻿<Properties StartupConfiguration="{443AEE82-87C1-8211-D5BC-E3CA1CC4F237}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Battle/BattleUnit.cs">
     <Files>
-      <File FileName="Assets/Scripts/Battle/BattleDialogBox.cs" Line="12" Column="34" />
-      <File FileName="Assets/Scripts/Battle/BattleSystem.cs" Line="21" Column="9" />
-      <File FileName="Assets/Scripts/Battle/BattleUnit.cs" Line="16" Column="26" />
-      <File FileName="Assets/Scripts/Battle/BattleHud.cs" Line="16" Column="55" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="64" Column="36" />
+      <File FileName="Assets/Scripts/Battle/BattleUnit.cs" Line="41" Column="37" />
+      <File FileName="Assets/Scripts/Battle/BattleSystem.cs" Line="30" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="a593ba29-3385-4b4a-9c0a-d65f6a97ce82" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="a15f1277-fdb5-4043-a931-c578a722e32e" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/kyosapor0111/Documents/UnityProjects/Pokemon/Assets/Scripts/Battle/BattleSystem.cs" relfile="Assets/Scripts/Battle/BattleSystem.cs" line="101" column="8" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
