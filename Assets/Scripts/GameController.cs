@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerController.StartBattle += StartBattle;
+        battleSystem.EndBattle += EndBattle;
         DialogManager.Instance.OnshowDialog += ShowDialog;
         DialogManager.Instance.OnCloseDialog += CloseDialog;
     }
@@ -54,8 +56,6 @@ public class GameController : MonoBehaviour
             DialogManager.Instance.HandleUpdate();
         }
     }
-
-<<<<<<< HEAD
     private void FixedUpdate()
     {
         if (state == GameState.FreeRoam)
@@ -64,16 +64,13 @@ public class GameController : MonoBehaviour
         }
         else if (state == GameState.Battle)
         {
-            // This code will be uncommented later
-            //battleSystem.HandleUpdate();
+            battleSystem.HandleUpdate();
         }
         else if (state == GameState.Dialog)
         {
             
         }
     }
-
-=======
     public void StartBattle()
     {
         state = GameState.Battle;
@@ -81,7 +78,6 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(false);
         battleSystem.StartBattle();
     }
->>>>>>> 2a8e6f70adc8b9bafc3fc766db9146d6039cc1ae
 
     public void EndBattle()
     {

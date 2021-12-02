@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum BattleState
 {
@@ -19,7 +20,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogBox dialogBox;
 
-    [SerializeField] GameController gameController;
+    //[SerializeField] GameController gameController;
+    public UnityAction EndBattle;
 
     BattleState state;
     int currentAction;  // 0 for fight, 1 for run
@@ -80,7 +82,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name} has fainted");
             enemyUnit.PlayerFaintAnimation();
             yield return new WaitForSeconds(0.7f);
-            gameController.EndBattle();
+            EndBattle();
         }
         else
         {
@@ -110,7 +112,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} has fainted");
             playerUnit.PlayerFaintAnimation();
             yield return new WaitForSeconds(0.7f);
-            gameController.EndBattle();
+            EndBattle();
         }
         else
         {
