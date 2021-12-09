@@ -54,6 +54,7 @@ public class LearnableMove
 public enum PokemonType
 {
     None,
+    Normal,
     Fire,
     Water,
     Electric,

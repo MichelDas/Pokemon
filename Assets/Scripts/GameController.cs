@@ -18,11 +18,10 @@ public class GameController : MonoBehaviour
 
     public GameState state = GameState.FreeRoam;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerController.StartBattle += StartBattle;
-        battleSystem.EndBattle += EndBattle;
+        battleSystem.BattleOver += EndBattle;
         DialogManager.Instance.OnshowDialog += ShowDialog;
         DialogManager.Instance.OnCloseDialog += CloseDialog;
     }
@@ -64,7 +63,7 @@ public class GameController : MonoBehaviour
         }
         else if (state == GameState.Battle)
         {
-            battleSystem.HandleUpdate();
+            
         }
         else if (state == GameState.Dialog)
         {
@@ -76,7 +75,12 @@ public class GameController : MonoBehaviour
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
-        battleSystem.StartBattle();
+
+        // For this I need to get pokemon party data from Player and
+        // wild pokemon data MapArea
+        PokemonParty playerParty = playerController.GetComponent<PokemonParty>();
+        Pokemon wildPokemon = FindObjectOfType<MapArea>().GetRandomWildPokemon();
+        battleSystem.StartBattle(playerParty, wildPokemon);
     }
 
     public void EndBattle()

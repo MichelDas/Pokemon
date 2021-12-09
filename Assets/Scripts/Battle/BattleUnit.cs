@@ -10,7 +10,11 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] int level;
     [SerializeField] bool isPlayerUnit;
 
+    [SerializeField] private BattleHud hud;
+
     public Pokemon Pokemon { get; set; }
+    public bool IsPlayerUnit { get => isPlayerUnit; }
+    public BattleHud Hud { get => hud; }
 
     Vector3 originalPos;
     Color originalColor;
@@ -23,12 +27,11 @@ public class BattleUnit : MonoBehaviour
         originalColor = image.color;
     }
 
-    public void Setup()
+    public void Setup(Pokemon pokemon)
     {
-        Pokemon = new Pokemon(_base, level);
+        Pokemon = pokemon;
 
-        
-        if (isPlayerUnit)
+        if (IsPlayerUnit)
         {
             image.sprite = Pokemon.Base.BackSprite;
         }
@@ -38,13 +41,14 @@ public class BattleUnit : MonoBehaviour
 
             
         }
+        hud.SetData(pokemon);
         image.color = originalColor;
         PlayerEnterAnimation();
     }
 
     public void PlayerEnterAnimation()
     {
-        if (isPlayerUnit)
+        if (IsPlayerUnit)
         {
             // move to right
             transform.localPosition = new Vector3(-850, originalPos.y);
@@ -62,7 +66,7 @@ public class BattleUnit : MonoBehaviour
     public void PlayerAttackAnim()
     { 
         Sequence sequence = DOTween.Sequence();
-        if (isPlayerUnit)
+        if (IsPlayerUnit)
         {
             sequence.Append(transform.DOLocalMoveX(originalPos.x + 50f, 0.25f));
             sequence.Append(transform.DOLocalMoveX(originalPos.x, 0.2f));

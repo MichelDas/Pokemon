@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class MapArea : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<Pokemon> pokemons;
 
-    // Update is called once per frame
-    void Update()
+    public Pokemon GetRandomWildPokemon()
     {
-        
+        int r = Random.Range(0, pokemons.Count);
+        Pokemon pokemon = pokemons[r];
+        pokemon.Init();  // init the Random pokemon that we get from here
+        return pokemon;
     }
 }
