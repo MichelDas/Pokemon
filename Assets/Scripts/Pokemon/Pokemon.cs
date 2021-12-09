@@ -13,8 +13,9 @@ public class Pokemon
 
     // Move that the pokemon can use
     public List<Move> Moves;
-    //public Dictionary<Stat, int> Stats { get; set; }
-    //public Dictionary<Stat, int> StatBoosts { get; set; }
+
+    public Dictionary<Stat, int> Stats { get; set; }
+    public Dictionary<Stat, int> StatBoosts { get; set; }
 
 
     public void Init()
@@ -22,7 +23,7 @@ public class Pokemon
         Moves = new List<Move>();
 
         // for now reset the max hp value
-        HP = Base.MaxHP;
+        
         maxHp = Base.MaxHP;
         // need to change upper portion
 
@@ -38,38 +39,63 @@ public class Pokemon
             { break; }
         }
 
-        //CalculateStats();
-        
+        CalculateStats();
+        HP = MaxHP;
+
+        StatBoosts = new Dictionary<Stat, int>()
+        {
+            {Stat.Attack, 0 },
+            {Stat.Defense, 0 },
+            {Stat.SpAttack, 0 },
+            {Stat.SpDefense, 0 },
+            {Stat.Speed, 0 }
+        };
+
     }
 
     void CalculateStats()
     {
-        //Stats = new Dictionary<Stat, int>();
-        ////Stats doesn't change
-        //Stats.Add(Stats.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5 );
-        //Stats.Add(Stats.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5);
-        //Stats.Add(Stats.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5);
-        //Stats.Add(Stats.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
-        //Stats.Add(Stats.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
-        //MaxHP = Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10;
+        Stats = new Dictionary<Stat, int>();
+        //Stats doesn't change
+        Stats.Add(Stat.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5);
+        Stats.Add(Stat.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5);
+        Stats.Add(Stat.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5);
+        Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
+        Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
+        MaxHP = Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10;
     }
 
-    //int GetStat(Stat stat)
-    //{
-    //    int statValue = Stats[stat];
-    //    // calculate boosts
-    //    return statValue;
-    //}
+    int GetStat(Stat stat)
+    {
+        int statValue = Stats[stat];
+        int boost = StatBoosts[stat];
+        Debug.Log(stat + " " + StatBoosts[stat]);
+        float[] boostValues = new float[] { 1, 1.5f, 2f,2.5f,3,3.5f, 4 };
+        if(boost >= 0)
+            statValue =  Mathf.FloorToInt(statValue * boostValues[boost]);
+        else
+            statValue = Mathf.FloorToInt(statValue / boostValues[-boost]);
+
+        return statValue;
+    }
 
     public void ApplyBoosts(List<StatBoost> statBoosts)
     {
-        // Change Pokemon Stats
+        foreach(StatBoost statBoost in statBoosts)
+        {
+            Stat stat = statBoost.stat;
+            int boost = statBoost.boost;
+            int boostVal = StatBoosts[stat] + boost;
+            //if (boostVal > 5)
+            //    boostVal = 5;
+            //else if (boostVal < -5)
+            //    boostVal = -5;
+            //StatBoosts[stat] = boostVal;
+            StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+        }
     }
 
-    public int Attack { get {
-            return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5;
-            //return GetStat(Stat.Attack);
-        } }
+    public int Attack { get {   return GetStat(Stat.Attack); } }
     public int Defense { get { return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5; } }
     public int SpAttack { get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5; } }
     public int SpDefense { get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5; } }

@@ -14,9 +14,9 @@ public class MoveBase : ScriptableObject
     [SerializeField] int accuracy;
     [SerializeField] int pp;
 
-    [SerializeField] MoveCategory category;
-    [SerializeField] MoveTarget target;
-    [SerializeField] MoveEffects effects;
+    [SerializeField] MoveCategory category; // indicates what kind of move is this
+    [SerializeField] MoveTarget target;     // who will be effected by this move
+    [SerializeField] MoveEffects effects;   // what kind of effect it will have
 
     public string Name { get => name; }
     public string Description { get => description; }
@@ -28,22 +28,6 @@ public class MoveBase : ScriptableObject
     public MoveTarget Target { get => target; }
     public MoveEffects Effects { get => effects; }
 
-
-    public bool IsSpecial
-    {
-        get
-        {
-            if (type == PokemonType.Fire || type == PokemonType.Water || type == PokemonType.Grass ||
-                type == PokemonType.Ice || type == PokemonType.Electric || type == PokemonType.Dragon)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-    }
-    }
 }
 
 
@@ -65,15 +49,13 @@ public enum MoveTarget
 public class MoveEffects
 {
     [SerializeField] List<StatBoost> boosts;
-
     public List<StatBoost> Boosts { get => boosts; }
 }
 
 [System.Serializable]
 public class StatBoost
 {
-    // I don't know where this Stat comes from
-    //public Stat stat;
+    public Stat stat;
     public int boost;
 }
 

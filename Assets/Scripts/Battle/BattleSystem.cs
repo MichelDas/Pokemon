@@ -51,7 +51,19 @@ public class BattleSystem : MonoBehaviour
         dialogBox.SetMoveNames(playerUnit.Pokemon.Moves);
         yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.name} apeared.");
         yield return new WaitForSeconds(.5f);
-        ActionSelection();
+        ChooseFirstTurn();
+    }
+
+    void ChooseFirstTurn()
+    {
+        if(playerUnit.Pokemon.Speed >= enemyUnit.Pokemon.Speed)
+        {
+            ActionSelection();
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
     }
 
     // This will make Player select an action
@@ -113,25 +125,24 @@ public class BattleSystem : MonoBehaviour
         move.PP--;
         yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} has used {move.Base.Name}");
         sourceUnit.PlayerAttackAnim();
-
         yield return new WaitForSeconds(0.7f);
-
         targetUnit.PlayerHitAnimation();
 
         if (move.Base.Category == MoveCategory.Stat)
         {
             MoveEffects effects = move.Base.Effects;
-            if (effects.Boosts != null)
+            if (effects.Boosts != null) 
             {
                 if (move.Base.Target == MoveTarget.Self)
                 {
-
+                    sourceUnit.Pokemon.ApplyBoosts(effects.Boosts);
                 }
                 else
                 {
-
+                    targetUnit.Pokemon.ApplyBoosts(effects.Boosts);
                 }
             }
+            //yield return Show
         }   
         else
         {
@@ -338,7 +349,8 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($" Go {playerUnit.Pokemon.Base.Name}");
         if (fainted)
         {
-            ActionSelection();
+            //ActionSelection();
+            ChooseFirstTurn();
         }
         else
         {
