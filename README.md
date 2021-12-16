@@ -12,6 +12,13 @@
   </p> -->
 </div>
 
+## Sample Video
+
+<!-- https://user-images.githubusercontent.com/58986949/115314310-805b2780-a1a7-11eb-8558-648a367ea231.mp4 -->
+https://youtu.be/BjZMzEfYqbs
+
+<iframe width="1171" height="668" src="https://www.youtube.com/embed/BjZMzEfYqbs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 <!-- ABOUT THE PROJECT -->
 ## プロジェクトについて （About The Project）
 こちら、ポケモンイエローやポケモンファイアレッドのようなポケモンゲームのクローンである練習プロジェクトです。
@@ -28,7 +35,13 @@ and play Level.scene.
 #### 特徴 (Features)
 
  * Top down Character walk
- * Talk to NPC
+ * NPC
+    - NPC Roam around
+    - NPC talk
+ * Pokemon
+    - learn new moves
+    - Type Advantages
+    - Stat Moves can increase or decrease Attack/ defence / speed etc.
  * dialog system with Scriptable object
  * NPC Roam around
  * Random encounter of wild pokemon when walking in the grass
