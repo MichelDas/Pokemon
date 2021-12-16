@@ -26,6 +26,9 @@ https://www.youtube.com/watch?v=cnvGFyz42lw&list=PLEkX-p0oUs8z38KTG2ZkCykWJEuLLY
 
 ### Getting Started 
 
+To Run This project, Clone this project to your local repository 
+and play Level.scene.
+
 To use this project simply following these commands:
  * Open your terminal and then type:
 
