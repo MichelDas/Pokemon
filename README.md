@@ -29,14 +29,15 @@ https://www.youtube.com/watch?v=cnvGFyz42lw&list=PLEkX-p0oUs8z38KTG2ZkCykWJEuLLY
 To Run This project, Clone this project to your local repository 
 and play Level.scene.
 
-To use this project simply following these commands:
- * Open your terminal and then type:
+#### Features
 
-     `$ git clone {the url to the GitHub repo}`
- * cd into the new folder and type:
-
-       `$ npm install`
-       
- * To run the React project:
-
-       `$ npm start`
+ * Top down Character walk
+ * Talk to NPC
+ * dialog system with Scriptable object
+ * NPC Roam around
+ * Random encounter of wild pokemon when walking in the grass
+ * Turn based battle system 
+ * Pokemon and Movement system with scriptable object
+ * Pokemon can learn new moves
+ * different kind of learnable moves ( normal moves, Stat change such as improve attack )
+ * Change pokemon when battling or when a pokemon is fainted
