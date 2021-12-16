@@ -22,7 +22,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] PartyScreen partyScreen;
 
     //[SerializeField] GameController gameController;
-    public UnityAction BattleOver;
+    public UnityAction OnBattleOver;
 
     BattleState state;
     int currentAction;  // 0 for fight, 1 for run
@@ -126,27 +126,16 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} has used {move.Base.Name}");
         sourceUnit.PlayerAttackAnim();
         yield return new WaitForSeconds(0.7f);
-        targetUnit.PlayerHitAnimation();
+        
 
         if (move.Base.Category == MoveCategory.Stat)
         {
-            MoveEffects effects = move.Base.Effects;
-            if (effects.Boosts != null) 
-            {
-                if (move.Base.Target == MoveTarget.Self)
-                {
-                    sourceUnit.Pokemon.ApplyBoosts(effects.Boosts);
-                }
-                else
-                {
-                    targetUnit.Pokemon.ApplyBoosts(effects.Boosts);
-                }
-            }
-            //yield return Show
+            yield return RunMoveEffects(move, sourceUnit.Pokemon, targetUnit.Pokemon);
         }   
         else
         {
             DamageDetails damageDetails = targetUnit.Pokemon.TakeDamage(move, sourceUnit.Pokemon);
+            targetUnit.PlayerHitAnimation();
             yield return targetUnit.Hud.UpdateHP();
             yield return ShowDamageDetails(damageDetails);
         }
@@ -158,15 +147,64 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(0.7f);
             CheckForBattleOver(targetUnit);
         }
-        else
+
+        // Turn end
+        // do damage of Condition
+        sourceUnit.Pokemon.OnAfterTurn();
+        yield return ShowStatusChanges(sourceUnit.Pokemon);
+        yield return new WaitForSeconds(0.4f);
+        // show damage animation
+        sourceUnit.PlayerHitAnimation();
+
+        yield return sourceUnit.Hud.UpdateHP();
+
+        if (sourceUnit.Pokemon.HP <= 0)
         {
-            // go to enemy move
-            //StartCoroutine(EnemyMove());
-            //ActionSelection();
+            yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} has fainted");
+            sourceUnit.PlayerFaintAnimation();
+            yield return new WaitForSeconds(0.7f);
+            CheckForBattleOver(sourceUnit);
         }
-        yield return null;
     }
 
+    IEnumerator RunMoveEffects(Move move, Pokemon source, Pokemon target)
+    {
+        MoveEffects effects = move.Base.Effects;
+        if (effects.Boosts != null)
+        {
+            if (move.Base.Target == MoveTarget.Self)
+            {
+                source.ApplyBoosts(effects.Boosts);
+            }
+            else
+            {
+                target.ApplyBoosts(effects.Boosts);
+            }
+        }
+        // if condition ID in not null
+        // i.e. Poisoned, burned etc
+        if(effects.Status != ConditionID.None)
+        {
+            Debug.Log("flame thrower has condition");
+            // This will Make the enemy poisoned, burned etc
+            target.SetStatus(effects.Status);
+        }
+
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
+    }
+
+    // Put log of Status change
+    IEnumerator ShowStatusChanges(Pokemon pokemon)
+    {
+        // repeat until log is empty
+        while (pokemon.StatusChanges.Count > 0)
+        {
+            string message = pokemon.StatusChanges.Dequeue(); // get the log
+            yield return dialogBox.TypeDialog(message);
+            yield return new WaitForSeconds(.7f);
+        }
+    }
     IEnumerator ShowDamageDetails(DamageDetails damageDetails)
     {
         if(damageDetails.Critical > 1f)
@@ -191,8 +229,7 @@ public class BattleSystem : MonoBehaviour
             Pokemon nextPokemon = playerParty.GetHealthyPokemon();
             if (nextPokemon == null)
             {
-                state = BattleState.BattleOver;
-                BattleOver();
+                BattleOver(); 
             }
             else
             {
@@ -203,9 +240,16 @@ public class BattleSystem : MonoBehaviour
         {
             // if the fainted pokemon is not player pokemon i.e. Wild pokemon
             // battle over as it is wild pokemon
-            state = BattleState.BattleOver;
             BattleOver();
         }
+    }
+
+    void BattleOver()
+    {
+        state = BattleState.BattleOver;
+        // Reset Status of each pokemon
+        playerParty.Pokemons.ForEach(p => p.onBattleOver());
+        OnBattleOver();
     }
 
     public void HandleUpdate()

@@ -80,17 +80,23 @@ public class BattleUnit : MonoBehaviour
 
     public void PlayerHitAnimation()
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(image.DOColor(Color.gray, 0.1f));
-        sequence.Append(image.DOColor(originalColor, 0.1f));
+        if (Pokemon.HpChanged)
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(image.DOColor(Color.gray, 0.1f));
+            sequence.Append(image.DOColor(originalColor, 0.1f));
+        }
 
     }
 
     public void PlayerFaintAnimation()
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(transform.DOLocalMoveY(originalPos.y - 150, 0.5f));
-        sequence.Join(image.DOFade(0, 0.5f));
+        
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(transform.DOLocalMoveY(originalPos.y - 150, 0.5f));
+            sequence.Join(image.DOFade(0, 0.5f));
+        
+        
     }
 
    

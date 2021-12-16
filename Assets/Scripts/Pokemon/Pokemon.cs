@@ -17,9 +17,25 @@ public class Pokemon
     public Dictionary<Stat, int> Stats { get; set; }
     public Dictionary<Stat, int> StatBoosts { get; set; }
 
+    // if a move changes the status of the pokemon such as poisoned or boost
+    // it will be recorded in the following queue
+    public Queue<string> StatusChanges { get; private set; }
+
+    public Condition Status { get; private set; }
+    public bool HpChanged{ get; set; }
+
+    Dictionary<Stat, string> statDic = new Dictionary<Stat, string>()
+    {
+        {Stat.Attack, "attack" },
+        {Stat.Defense, "defence" },
+        {Stat.SpAttack, "spcial attack" },
+        {Stat.SpDefense, "special defence" },
+        {Stat.Speed, "speed" }
+    };
 
     public void Init()
     {
+        StatusChanges = new Queue<string>();
         Moves = new List<Move>();
 
         // for now reset the max hp value
@@ -42,6 +58,12 @@ public class Pokemon
         CalculateStats();
         HP = MaxHP;
 
+        ResetStatBoost();
+
+    }
+
+    void ResetStatBoost()
+    {
         StatBoosts = new Dictionary<Stat, int>()
         {
             {Stat.Attack, 0 },
@@ -50,7 +72,11 @@ public class Pokemon
             {Stat.SpDefense, 0 },
             {Stat.Speed, 0 }
         };
+    }
 
+    public void onBattleOver()
+    {
+        ResetStatBoost();
     }
 
     void CalculateStats()
@@ -69,7 +95,6 @@ public class Pokemon
     {
         int statValue = Stats[stat];
         int boost = StatBoosts[stat];
-        Debug.Log(stat + " " + StatBoosts[stat]);
         float[] boostValues = new float[] { 1, 1.5f, 2f,2.5f,3,3.5f, 4 };
         if(boost >= 0)
             statValue =  Mathf.FloorToInt(statValue * boostValues[boost]);
@@ -85,21 +110,23 @@ public class Pokemon
         {
             Stat stat = statBoost.stat;
             int boost = statBoost.boost;
-            int boostVal = StatBoosts[stat] + boost;
-            //if (boostVal > 5)
-            //    boostVal = 5;
-            //else if (boostVal < -5)
-            //    boostVal = -5;
-            //StatBoosts[stat] = boostVal;
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+            if(boost > 0)
+            {
+                StatusChanges.Enqueue($"{Base.Name}'s {statDic[stat]} is increased");
+            }
+            else
+            {
+                StatusChanges.Enqueue($"{Base.Name}'s {statDic[stat]} is decreased");
+            }
         }
     }
 
     public int Attack { get {   return GetStat(Stat.Attack); } }
-    public int Defense { get { return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5; } }
-    public int SpAttack { get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5; } }
-    public int SpDefense { get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5; } }
-    public int Speed { get { return Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5; } }
+    public int Defense { get { return GetStat(Stat.Defense); } }
+    public int SpAttack { get { return GetStat(Stat.SpAttack); } }
+    public int SpDefense { get { return GetStat(Stat.Defense); } }
+    public int Speed { get { return GetStat(Stat.Speed); } }
     public int MaxHP { get => maxHp; private set => maxHp = value; }
     public int HP { get => hp; set => hp = value; }
     public PokemonBase Base { get => _base; }
@@ -138,19 +165,43 @@ public class Pokemon
         float d = a * move.Base.Power * ((float)attack / Defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
 
-        HP -= damage;
-        if(HP <= 0)
+        UpdateHP(damage);
+        if (HP <= 0)
         {
             HP = 0;
             damageDetails.Fainted = true;
         }
+
         return damageDetails;
+    }
+
+    public void UpdateHP(int damage)
+    {
+        HP = Mathf.Clamp(HP - damage, 0, maxHp);
+        HpChanged = true;
+
     }
 
     public Move GetRandomMove()
     {
         int r = Random.Range(0, Moves.Count);
         return Moves[r];
+    }
+
+    
+    public void SetStatus(ConditionID conditionID)
+    {
+        // what kind of effect the move have
+        Status = ConditionDB.Conditions[conditionID];
+        // add to log
+        StatusChanges.Enqueue($"{Base.Name}{Status.StartMessage}");
+
+    }
+
+    // Do it When turn ends
+    public void OnAfterTurn()
+    {
+        Status?.onAfterTurn?.Invoke(this);
     }
 
 }

@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         playerController.StartBattle += StartBattle;
-        battleSystem.BattleOver += EndBattle;
+        battleSystem.OnBattleOver += EndBattle;
         DialogManager.Instance.OnshowDialog += ShowDialog;
         DialogManager.Instance.OnCloseDialog += CloseDialog;
     }
