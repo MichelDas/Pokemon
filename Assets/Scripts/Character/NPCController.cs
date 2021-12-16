@@ -23,11 +23,13 @@ public class NPCController : MonoBehaviour, IInteractable
         character = GetComponent<Character>();
     }
 
-    public void Interact()
+    public void Interact(Vector3 initiator)
     {
         if(state == NPCState.Idle)
         {
             state = NPCState.Dialog;
+            // Change which way the NPC is looking at
+            character.LookToward(initiator);
             StartCoroutine(DialogManager.Instance.ShowDialog(dialog, OnDialogFinished));
         }
         
@@ -35,6 +37,7 @@ public class NPCController : MonoBehaviour, IInteractable
 
     void OnDialogFinished()
     {
+        idleTimer = 0;
         state = NPCState.Idle;
     }
 
@@ -56,8 +59,13 @@ public class NPCController : MonoBehaviour, IInteractable
     IEnumerator Walk()
     {
         state = NPCState.Walk;
+        Vector3 oldPosition = transform.position;
         yield return character.Move(movePattern[currentPattern]);
-        currentPattern = (currentPattern + 1) % movePattern.Count;
+        // if don't move, don't go to next animation
+        if(oldPosition != transform.position)
+        {
+            currentPattern = (currentPattern + 1) % movePattern.Count;
+        }
         state = NPCState.Idle;
     }
 }

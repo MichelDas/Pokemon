@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
         if (collider2D)
         {
-            collider2D.GetComponent<NPCController>()?.Interact();
+            collider2D.GetComponent<NPCController>()?.Interact(transform.position);
         }
     }
 

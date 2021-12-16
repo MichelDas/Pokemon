@@ -1,16 +1,10 @@
 ﻿<Properties StartupConfiguration="{443AEE82-87C1-8211-D5BC-E3CA1CC4F237}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Pokemon/MoveBase.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Character/PlayerController.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameController.cs" Line="24" Column="22" />
-      <File FileName="Assets/Scripts/Battle/BattleSystem.cs" Line="145" Column="32" />
-      <File FileName="Assets/Scripts/Battle/PartyScreen.cs" />
-      <File FileName="Assets/Scripts/Battle/BattleDialogBox.cs" />
-      <File FileName="Assets/Scripts/Battle/PartyMemberUI.cs" />
-      <File FileName="Assets/Scripts/Battle/BattleHud.cs" />
-      <File FileName="Assets/Scripts/Battle/BattleUnit.cs" />
-      <File FileName="Assets/Scripts/Pokemon/Pokemon.cs" Line="61" Column="23" />
-      <File FileName="Assets/Scripts/Pokemon/PokemonBase.cs" Line="80" Column="10" />
-      <File FileName="Assets/Scripts/Pokemon/MoveBase.cs" Line="17" Column="10" />
+      <File FileName="Assets/Scripts/Character/NPCController.cs" Line="26" Column="20" />
+      <File FileName="Assets/Scripts/Character/Character.cs" Line="70" Column="1" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="15" Column="39" />
+      <File FileName="Assets/Scripts/Character/PlayerController.cs" Line="57" Column="82" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp-firstpass PreferredExecutionTarget="4b54afe0-b76d-4294-b837-0c3dcacee557" />
