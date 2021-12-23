@@ -77,7 +77,10 @@ public enum Stat
     Defense,
     SpAttack,
     SpDefense,
-    Speed
+    Speed,
+
+    Accuracy, //命中率
+    Evasion,　//海部rし
 }
 
 

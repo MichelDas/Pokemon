@@ -7,10 +7,14 @@ public class PlayerController : MonoBehaviour
     Vector2 input;
     Character character;
 
-    [SerializeField] LayerMask solidObjectLayer;
-    [SerializeField] LayerMask interactableLayer;
-    [SerializeField] LayerMask longGrassLayer;
-    public UnityAction StartBattle;
+    public UnityAction OnEncounted;
+    public UnityAction<Collider2D> OnEnterTrainersView;
+
+    [SerializeField] new string name;
+    [SerializeField] Sprite sp;
+
+    public string Name { get => name; }
+    public Sprite Sp { get => sp;  }
 
     private void Awake()
     {
@@ -34,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero)
             {
-                StartCoroutine(character.Move(input, CheckForEncounters));
+                StartCoroutine(character.Move(input, OnMoveOver));
             }
         }
 
@@ -58,6 +62,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnMoveOver()
+    {
+        CheckForEncounters();
+        CheckIfTrainerView();
+    }
+
     void CheckForEncounters()
     {
         if(Physics2D.OverlapCircle(transform.position, 0.2f, GameLayers.Instance.LongGrassLayer ))
@@ -67,8 +77,19 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Monster Encounter");
                 character.Animator.IsMoving = false;
-                StartBattle();
+                OnEncounted();
             }
+        }
+    }
+
+    void CheckIfTrainerView()
+    {
+        Collider2D trainerCollider2D = Physics2D.OverlapCircle(transform.position, 0.2f, GameLayers.Instance.FovLayer);
+        if (trainerCollider2D)
+        {
+            Debug.Log("Entered trainer Field of view");
+            character.Animator.IsMoving = false;
+            OnEnterTrainersView?.Invoke(trainerCollider2D);
         }
     }
 

@@ -17,7 +17,7 @@ TagManager:
   - LongGrass
   - Interactable
   - Player
-  - 
+  - FovLayer
   - 
   - 
   - 
@@ -44,9 +44,12 @@ TagManager:
   - name: Background
     uniqueID: 1138422917
     locked: 0
-  - name: ForeGround
-    uniqueID: 3220513979
+  - name: Grass
+    uniqueID: 3460963397
     locked: 0
   - name: Player
     uniqueID: 1642182767
+    locked: 0
+  - name: ForeGround
+    uniqueID: 3220513979
     locked: 0

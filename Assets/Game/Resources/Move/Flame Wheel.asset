@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b91c1cb60cab4fdb9d90a22eb37647c, type: 3}
   m_Name: Flame Wheel
   m_EditorClassIdentifier: 
-  name: Flame Thrower
+  name: Flame Wheel
   description: 
-  type: 1
+  type: 2
   power: 34
   accuracy: 100
   pp: 5
+  category: 0
+  target: 0
+  effects:
+    boosts: []
+    status: 0

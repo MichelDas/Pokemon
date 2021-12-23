@@ -63,7 +63,7 @@ public class DialogManager : MonoBehaviour
                 StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
             else
             {
-
+                // dialog has ended
                 currentLine = 0;
                 dialogBox.SetActive(false);
                 OnDialogFinishd?.Invoke();

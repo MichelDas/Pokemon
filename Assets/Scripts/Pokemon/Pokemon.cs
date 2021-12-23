@@ -22,6 +22,11 @@ public class Pokemon
     public Queue<string> StatusChanges { get; private set; }
 
     public Condition Status { get; private set; }
+    public int StatusTime { get; set; }
+
+    public Condition VolatileStaus { get; private set; }
+    public int VolatileStatusTime { get;  set; }
+
     public bool HpChanged{ get; set; }
 
     Dictionary<Stat, string> statDic = new Dictionary<Stat, string>()
@@ -30,8 +35,12 @@ public class Pokemon
         {Stat.Defense, "defence" },
         {Stat.SpAttack, "spcial attack" },
         {Stat.SpDefense, "special defence" },
-        {Stat.Speed, "speed" }
+        {Stat.Speed, "speed" },
+        {Stat.Accuracy, "Accuracy" },
+        {Stat.Evasion, "Evasion" }
     };
+
+    public System.Action OnStatusChanged;
 
     public void Init()
     {
@@ -59,6 +68,8 @@ public class Pokemon
         HP = MaxHP;
 
         ResetStatBoost();
+        Status = null;
+        VolatileStaus = null;
 
     }
 
@@ -70,13 +81,16 @@ public class Pokemon
             {Stat.Defense, 0 },
             {Stat.SpAttack, 0 },
             {Stat.SpDefense, 0 },
-            {Stat.Speed, 0 }
+            {Stat.Speed, 0 },
+            {Stat.Accuracy, 0 },
+            {Stat.Evasion, 0 }
         };
     }
 
     public void onBattleOver()
     {
         ResetStatBoost();
+        VolatileStaus = null;
     }
 
     void CalculateStats()
@@ -88,7 +102,7 @@ public class Pokemon
         Stats.Add(Stat.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5);
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
-        MaxHP = Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10;
+        MaxHP = Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10 + Level;
     }
 
     int GetStat(Stat stat)
@@ -188,20 +202,74 @@ public class Pokemon
         return Moves[r];
     }
 
-    
     public void SetStatus(ConditionID conditionID)
     {
+        if (Status != null)
+        {
+            // if the pokemon is already poisoned or burned return
+            return;
+        }
         // what kind of effect the move have
         Status = ConditionDB.Conditions[conditionID];
+        Status?.OnStart?.Invoke(this);
         // add to log
         StatusChanges.Enqueue($"{Base.Name}{Status.StartMessage}");
+        // todo update status text in the hud
+        OnStatusChanged?.Invoke();
 
+    }
+
+    public void CureStatus()
+    {
+        Status = null;  
+        OnStatusChanged?.Invoke();
+
+    }
+
+    public void SetVolatileStatus(ConditionID conditionID)
+    {
+        if (VolatileStaus != null)
+        {
+            return;
+        }
+        VolatileStaus = ConditionDB.Conditions[conditionID];
+        VolatileStaus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name}{VolatileStaus.StartMessage}");
+    }
+
+    public void CureVolatileStatus()
+    {
+        VolatileStaus = null;
+    }
+
+    public bool OnBeforeMove()
+    {
+        bool canRunMove = true;
+
+        if(Status?.OnBeforeMove != null)
+        {
+            if(Status.OnBeforeMove(this) == false)
+            {
+                canRunMove = false;
+            }
+        }
+
+        if(VolatileStaus?.OnBeforeMove != null)
+        {
+            if(VolatileStaus.OnBeforeMove(this) == false)
+            {
+                canRunMove = false;
+            }
+        }
+        return canRunMove;
     }
 
     // Do it When turn ends
     public void OnAfterTurn()
     {
         Status?.onAfterTurn?.Invoke(this);
+        VolatileStaus?.onAfterTurn?.Invoke(this);
+
     }
 
 }

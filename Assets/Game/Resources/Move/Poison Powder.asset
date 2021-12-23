@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b91c1cb60cab4fdb9d90a22eb37647c, type: 3}
   m_Name: Poison Powder
   m_EditorClassIdentifier: 
-  name: Water Gun
+  name: Poison Powder
   description: 
-  type: 2
+  type: 8
   power: 34
   accuracy: 100
-  pp: 5
+  pp: 20
+  category: 2
+  target: 0
+  effects:
+    boosts: []
+    status: 1

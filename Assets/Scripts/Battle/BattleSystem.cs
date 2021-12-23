@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public enum BattleState
 {
@@ -20,6 +21,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] BattleDialogBox dialogBox;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] Image playerImage;
+    [SerializeField] Image trainerImage;
 
     //[SerializeField] GameController gameController;
     public UnityAction OnBattleOver;
@@ -30,9 +33,18 @@ public class BattleSystem : MonoBehaviour
     int currentMemeber;
 
     PokemonParty playerParty; // This is a list got from Gamecontroller which got it from player
+    PokemonParty trainerParty;
     Pokemon wildPokemon;  // this is a wild pokemon from gamecontroller which got it from MapArea
 
-    // This will be called from outside this class to start battle
+    PlayerController player;
+    TrainerController trainer;
+
+    bool isTrainerBattle;
+
+    public Image PlayerImage { get => playerImage;  }
+    public Image TrainerImage { get => trainerImage;  }
+
+    // This is for wild pokemon
     public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon)
     {
         this.playerParty = playerParty;
@@ -40,18 +52,64 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
+    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty)
+    {
+        isTrainerBattle = true;
+        player = playerParty.GetComponent<PlayerController>();
+        trainer = trainerParty.GetComponent<TrainerController>();
+        this.playerParty = playerParty;
+        this.trainerParty = trainerParty;
+
+        playerImage.sprite = player.Sp;
+        trainerImage.sprite = trainer.Sp;
+        StartCoroutine(SetupBattle());
+    }
+
     IEnumerator SetupBattle()
     {
-        state = BattleState.Start;
-        playerUnit.Setup(playerParty.GetHealthyPokemon());
-        enemyUnit.Setup(wildPokemon);
-        partyScreen.Init();
+        playerUnit.Clear();
+        enemyUnit.Clear();
+        if (!isTrainerBattle)
+        {
+            PlayerImage.gameObject.SetActive(false);
+            TrainerImage.gameObject.SetActive(false);
+            playerUnit.Setup(playerParty.GetHealthyPokemon());
+            enemyUnit.Setup(wildPokemon);
+            dialogBox.SetMoveNames(playerUnit.Pokemon.Moves);
+            yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.name} apeared.");
+            yield return new WaitForSeconds(.5f);
+            
+        }
+        else
+        {
+            playerUnit.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(false);
+            playerImage.gameObject.SetActive(true);
+            TrainerImage.gameObject.SetActive(true);
+            yield return dialogBox.TypeDialog($"{trainer.Name} has challenged you.");
+            //playerUnit.Setup(playerParty.GetHealthyPokemon());
+            Pokemon enemyPokemon = trainerParty.GetHealthyPokemon();
+            yield return new WaitForSeconds(0.5f);
+            trainerImage.gameObject.SetActive(false);
 
-        // HUD works
-        dialogBox.SetMoveNames(playerUnit.Pokemon.Moves);
-        yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.name} apeared.");
-        yield return new WaitForSeconds(.5f);
-        ChooseFirstTurn();
+            yield return dialogBox.TypeDialog($"{trainer.Name} has sent {enemyPokemon.Base.Name}.");
+            enemyUnit.gameObject.SetActive(true);
+            enemyUnit.Setup(enemyPokemon);
+
+            yield return new WaitForSeconds(1.5f);
+            PlayerImage.gameObject.SetActive(false);
+            Pokemon playerPokemon = playerParty.GetHealthyPokemon();
+            yield return dialogBox.TypeDialog($"Go {playerPokemon.Base.Name}");
+            playerUnit.gameObject.SetActive(true);
+            playerUnit.Setup(playerPokemon);
+            dialogBox.SetMoveNames(playerUnit.Pokemon.Moves);
+            yield return new WaitForSeconds(0.7f);
+        }
+
+        partyScreen.Init();
+        //ChooseFirstTurn();
+        ActionSelection();
+
     }
 
     void ChooseFirstTurn()
@@ -122,42 +180,61 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
+        bool canRunMove = sourceUnit.Pokemon.OnBeforeMove();
+        yield return ShowStatusChanges(sourceUnit.Pokemon);
+        if (!canRunMove)
+        {
+            sourceUnit.PlayerHitAnimation();
+            yield return sourceUnit.Hud.UpdateHP();
+            yield break;
+        }
         move.PP--;
         yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} has used {move.Base.Name}");
-        sourceUnit.PlayerAttackAnim();
-        yield return new WaitForSeconds(0.7f);
-        
 
-        if (move.Base.Category == MoveCategory.Stat)
+        // check if hit
+        if (CheckIfMoveHits(move, sourceUnit.Pokemon, targetUnit.Pokemon))
         {
-            yield return RunMoveEffects(move, sourceUnit.Pokemon, targetUnit.Pokemon);
-        }   
+
+
+
+            sourceUnit.PlayerAttackAnim();
+            yield return new WaitForSeconds(0.7f);
+
+
+            if (move.Base.Category == MoveCategory.Stat)
+            {
+                yield return RunMoveEffects(move, sourceUnit.Pokemon, targetUnit.Pokemon);
+            }
+            else
+            {
+                DamageDetails damageDetails = targetUnit.Pokemon.TakeDamage(move, sourceUnit.Pokemon);
+                targetUnit.PlayerHitAnimation();
+                yield return targetUnit.Hud.UpdateHP();
+                yield return ShowDamageDetails(damageDetails);
+            }
+
+            if (targetUnit.Pokemon.HP <= 0)
+            {
+                yield return dialogBox.TypeDialog($"{targetUnit.Pokemon.Base.Name} has fainted");
+                targetUnit.PlayerFaintAnimation();
+                yield return new WaitForSeconds(0.7f);
+                CheckForBattleOver(targetUnit);
+            }
+        }
         else
         {
-            DamageDetails damageDetails = targetUnit.Pokemon.TakeDamage(move, sourceUnit.Pokemon);
-            targetUnit.PlayerHitAnimation();
-            yield return targetUnit.Hud.UpdateHP();
-            yield return ShowDamageDetails(damageDetails);
+            yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} has missed");
         }
-
-        if (targetUnit.Pokemon.HP <= 0)
-        {
-            yield return dialogBox.TypeDialog($"{targetUnit.Pokemon.Base.Name} has fainted");
-            targetUnit.PlayerFaintAnimation();
-            yield return new WaitForSeconds(0.7f);
-            CheckForBattleOver(targetUnit);
-        }
-
         // Turn end
         // do damage of Condition
         sourceUnit.Pokemon.OnAfterTurn();
-        yield return ShowStatusChanges(sourceUnit.Pokemon);
-        yield return new WaitForSeconds(0.4f);
-        // show damage animation
-        sourceUnit.PlayerHitAnimation();
+            yield return ShowStatusChanges(sourceUnit.Pokemon);
+            yield return new WaitForSeconds(0.4f);
+            // show damage animation
+            sourceUnit.PlayerHitAnimation();
 
-        yield return sourceUnit.Hud.UpdateHP();
-
+            yield return sourceUnit.Hud.UpdateHP();
+        
         if (sourceUnit.Pokemon.HP <= 0)
         {
             yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} has fainted");
@@ -185,13 +262,41 @@ public class BattleSystem : MonoBehaviour
         // i.e. Poisoned, burned etc
         if(effects.Status != ConditionID.None)
         {
-            Debug.Log("flame thrower has condition");
             // This will Make the enemy poisoned, burned etc
             target.SetStatus(effects.Status);
         }
+        if (effects.VolatileStatus != ConditionID.None)
+        {
+            // This will Make the enemy poisoned, burned etc
+            target.SetVolatileStatus(effects.VolatileStatus);
+        }
+
 
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
+    }
+
+    // Ei jaigai fix korte hobe
+    bool CheckIfMoveHits(Move move, Pokemon source, Pokemon target)
+    {
+        float moveAccuracy = move.Base.Accuracy;
+
+        int accuracy = source.StatBoosts[Stat.Accuracy];
+        int evasion = target.StatBoosts[Stat.Accuracy];
+
+        float[] boostValues = new float[] { 1, 4f/3f, 5f/3f, 2f, 7f/3f, 8f/3f, 3f};
+
+        if (moveAccuracy >= 0)
+            moveAccuracy *= boostValues[accuracy];
+        else
+            moveAccuracy /= boostValues[-accuracy];
+
+        if (evasion >= 0)
+            moveAccuracy *= boostValues[evasion];
+        else
+            moveAccuracy /= boostValues[-evasion];
+
+        return Random.Range(1, 101) <= moveAccuracy;
     }
 
     // Put log of Status change
@@ -249,6 +354,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.BattleOver;
         // Reset Status of each pokemon
         playerParty.Pokemons.ForEach(p => p.onBattleOver());
+        isTrainerBattle = false;
         OnBattleOver();
     }
 

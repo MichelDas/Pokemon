@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ember
   description: 
-  type: 1
+  type: 2
   power: 34
   accuracy: 100
   pp: 25
+  category: 0
+  target: 0
+  effects:
+    boosts: []
+    status: 0

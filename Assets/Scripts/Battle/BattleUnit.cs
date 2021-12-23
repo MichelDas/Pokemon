@@ -41,12 +41,15 @@ public class BattleUnit : MonoBehaviour
 
             
         }
-        hud.SetData(pokemon);
+        
+        
         image.color = originalColor;
-        PlayerEnterAnimation();
+        PokemonEnterAnimation();
+        hud.SetData(pokemon);
+        hud.gameObject.SetActive(true);
     }
 
-    public void PlayerEnterAnimation()
+    public void PokemonEnterAnimation()
     {
         if (IsPlayerUnit)
         {
@@ -76,6 +79,11 @@ public class BattleUnit : MonoBehaviour
             sequence.Append(transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
             sequence.Append(transform.DOLocalMoveX(originalPos.x, 0.2f));
         }
+    }
+
+    public void Clear()
+    {
+        hud.gameObject.SetActive(false);
     }
 
     public void PlayerHitAnimation()
