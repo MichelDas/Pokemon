@@ -1,21 +1,22 @@
-﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Pokemon/Pokemon.cs">
+﻿<Properties StartupConfiguration="{443AEE82-87C1-8211-D5BC-E3CA1CC4F237}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Util/CameraScript.cs">
     <Files>
       <File FileName="Assets/Scripts/Character/PlayerController.cs" Line="16" Column="38" />
-      <File FileName="Assets/Scripts/Character/TrainerController.cs" Line="16" Column="35" />
+      <File FileName="Assets/Scripts/Character/TrainerController.cs" />
       <File FileName="Assets/Scripts/Character/NPCController.cs" />
-      <File FileName="Assets/Scripts/GameController.cs" Line="93" Column="33" />
+      <File FileName="Assets/Scripts/GameController.cs" />
       <File FileName="Assets/Scripts/Character/CharacterAnimator.cs" />
-      <File FileName="Assets/Scripts/GamePlay/DialogManager.cs" Line="69" Column="32" />
-      <File FileName="Assets/Scripts/Battle/BattleSystem.cs" Line="91" Column="18" />
-      <File FileName="Assets/Scripts/Battle/BattleUnit.cs" Line="46" Column="40" />
-      <File FileName="Assets/Scripts/Pokemon/Pokemon.cs" Line="6" Column="14" />
+      <File FileName="Assets/Scripts/GamePlay/DialogManager.cs" />
+      <File FileName="Assets/Scripts/Battle/BattleSystem.cs" Line="550" Column="3" />
+      <File FileName="Assets/Scripts/Battle/BattleUnit.cs" />
+      <File FileName="Assets/Scripts/Pokemon/Pokemon.cs" />
+      <File FileName="Assets/Scripts/Util/CameraScript.cs" Line="5" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp-firstpass PreferredExecutionTarget="4b54afe0-b76d-4294-b837-0c3dcacee557" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="deaaacf3-9285-419d-8334-93bcd4804763" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d341bd0e-79a7-41e1-adf1-3c074d66769f" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

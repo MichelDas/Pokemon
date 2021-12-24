@@ -16,7 +16,7 @@ MonoBehaviour:
   description: 
   type: 3
   power: 34
-  accuracy: 30
+  accuracy: 70
   pp: 5
   category: 0
   target: 0
