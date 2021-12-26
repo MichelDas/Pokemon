@@ -16,8 +16,8 @@
 
 <!-- https://user-images.githubusercontent.com/58986949/115314310-805b2780-a1a7-11eb-8558-648a367ea231.mp4 -->
 https://youtu.be/BjZMzEfYqbs
+[![Little red riding hood](http://i.imgur.com/7YTMFQp.png)](https://youtu.be/KbV4jXW690c")
 
-<iframe width="1171" height="668" src="https://www.youtube.com/embed/BjZMzEfYqbs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <!-- ABOUT THE PROJECT -->
 ## プロジェクトについて （About The Project）
