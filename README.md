@@ -15,8 +15,7 @@
 ## Sample Video
 
 <!-- https://user-images.githubusercontent.com/58986949/115314310-805b2780-a1a7-11eb-8558-648a367ea231.mp4 -->
-https://youtu.be/BjZMzEfYqbs
-[![Little red riding hood](http://i.imgur.com/7YTMFQp.png)](https://youtu.be/KbV4jXW690c")
+[![Pokemon Clone](https://i.pinimg.com/564x/17/7e/09/177e09169044d95b0b8b6679273e7307.jpg)](https://youtu.be/KbV4jXW690c")
 
 
 <!-- ABOUT THE PROJECT -->
