@@ -5,7 +5,7 @@
     <img src="https://seeklogo.com/images/P/Pokemon-logo-497D61B223-seeklogo.com.png" alt="Logo" width="170" height="80">
   </a>
 
-  <h3 align="center">Pokemon Clone</h3>
+<!--  <h3 align="center">Pokemon Clone</h3> -->
 
 <!--   <p align="center">
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
